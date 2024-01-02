@@ -15,7 +15,7 @@ class UserController extends Controller
     public function signup(Request $request){
         $request->validate([
            'name'=>'required|string|max:250',
-           'email'=>'required|email|unique:users',
+           'email'=>'required|email|unique:users,email',
            'password'=>'required|string|min:5|confirmed',
         ]);
         /** @var User $user */
