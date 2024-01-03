@@ -2,35 +2,14 @@ import React, {useState, useRef, useEffect} from 'react';
 import {Link, useParams,useNavigate } from "react-router-dom";
 import {useStateContext} from "../contexts/ContextProvider.jsx";
 import axiosClient from "../axios-client.js";
+import useGetUser from "../hook/useGetUser.jsx";
 
 const UserForm = () => {
-    const [loading, setLoading] = useState(false)
+
     const {setNotification} = useStateContext()
     const {id} = useParams();
-
+    const {setLoading, loading,setUser,user} = useGetUser(id)
     const navigate = useNavigate();
-    const [user, setUser] = useState({
-        id: null,
-        name: null,
-        email: null,
-        password: null,
-        password_confirmation: null,
-    });
-    console.log(user)
-    const getUser = id => {
-        if (id) {
-            setLoading(true)
-            axiosClient.get('/users/' + id).then(({data}) => {
-                setLoading(false)
-                setUser(data)
-                console.log(data)
-            })
-            return true;
-        }
-    }
-    useEffect(()=>{
-        getUser(id)
-    },[])
 
     const [error, _setError] = useState(null);
 
