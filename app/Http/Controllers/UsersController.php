@@ -34,7 +34,7 @@ class UsersController extends Controller
     {
         $data = $request->validated();
         $data['password'] = bcrypt($data['password']);
-        $request->user->create($data);
+        $request->user()->create($data);
 
         return \response($request->user, 201);
     }
