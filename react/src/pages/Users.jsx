@@ -19,17 +19,18 @@ const TableRow = ({data, handleDelete}) => {
 }
 
 const Users = () => {
+    const {setNotification} = useStateContext();
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(false)
     const handleDelete = (id) =>{
         if (!window.confirm("Are you sure, you want to delete this user?")){
             return
         }
-        console.log(id)
 
         axiosClient.delete('/users/'+id).then(()=>{
-            //todo: show notifications
+            setNotification("User deleted successfully");
             getUsers()
+
         })
     }
     const getUsers = () =>{
@@ -64,7 +65,15 @@ const Users = () => {
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    {loading ? <p>Loading...</p> : <tbody>
+                    {loading ?
+                        <tbody>
+                        <tr >
+                            <td colSpan={5} className='text-center'>
+                                Loading...
+                            </td>
+                        </tr>
+                        </tbody> :
+                    <tbody>
                     {(users && users.data) && users.data.map((item)=> <TableRow key={item.id} data={item} handleDelete={handleDelete} />) }
                     </tbody>}
                 </table>
